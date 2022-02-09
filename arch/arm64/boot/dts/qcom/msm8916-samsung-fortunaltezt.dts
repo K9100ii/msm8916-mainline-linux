@@ -52,6 +52,11 @@
 	reg = <0x0 0x86800000 0x0 0x5000000>;
 };
 
+&panel {
+	/* Actually hx8389c without PWM. There is no other variant */
+	compatible = "samsung,hx8389c-gh9607501a";
+};
+
 &st_accel {
 	status = "okay";
 	compatible = "st,lis2hh12";
