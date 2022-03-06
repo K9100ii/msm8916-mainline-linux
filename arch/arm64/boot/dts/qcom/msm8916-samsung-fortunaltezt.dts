@@ -30,6 +30,15 @@
 	};
 };
 
+/* On fortunaltezt backlight is controlled with MIPI DCS commands */
+&clk_pwm {
+	status = "disabled";
+};
+
+&clk_pwm_backlight {
+	status = "disabled";
+};
+
 &i2c_nfc {
 	status = "okay";
 
@@ -55,6 +64,8 @@
 &panel {
 	/* Actually hx8389c without PWM. There is no other variant */
 	compatible = "samsung,hx8389c-gh9607501a";
+
+	/delete-property/ backlight;
 };
 
 &st_accel {
