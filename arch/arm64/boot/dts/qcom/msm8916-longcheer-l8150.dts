@@ -290,6 +290,10 @@
 	extcon = <&pm8916_charger>;
 };
 
+&venus {
+	status = "okay";
+};
+
 &wcnss {
 	status = "okay";
 };
