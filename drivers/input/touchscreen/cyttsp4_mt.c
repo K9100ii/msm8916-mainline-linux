@@ -124,7 +124,7 @@ static void cyttsp4_get_mt_touches(struct cyttsp4_mt_data *md, int num_cur_rec)
 	int i, j, t = 0;
 	int mt_sync_count = 0;
 	static int mt_count[CY_TMA4XX_MAX_TCH] = {0, };
-	DECLARE_BITMAP(ids, max(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH));
+	DECLARE_BITMAP(ids, MAX(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH));
 
 	bitmap_zero(ids, si->si_ofs.tch_abs[CY_TCH_T].max);
 
