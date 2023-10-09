@@ -20,6 +20,61 @@
 	model = "Samsung Galaxy Ace 4 (SM-G357FZ)";
 	compatible = "samsung,heatqlte", "qcom,msm8916";
 	chassis-type = "handset";
+
+	i2c-touchkey {
+		compatible = "i2c-gpio";
+		sda-gpios = <&tlmm 8  (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&tlmm 10 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&tkey_i2c_default>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		touchkey: touchkey@20 {
+			compatible = "cypress,tm2-touchkey";
+			reg = <0x20>;
+
+			interrupt-parent = <&tlmm>;
+			interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
+
+			vcc-supply = <&reg_touchkey>;
+			vdd-supply = <&reg_touchkey_led>;
+			vddio-supply = <&pm8916_l6>;
+
+			linux,keycodes = <KEY_APPSELECT KEY_BACK>;
+
+			pinctrl-names = "default";
+			pinctrl-0 = <&tkey_default>;
+		};
+	};
+
+	reg_touchkey: regulator-touchkey {
+		compatible = "regulator-fixed";
+		regulator-name = "touchkey";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+
+		gpio = <&tlmm 11 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&tkey_en_default>;
+	};
+
+	reg_touchkey_led: regulator-touchkey-led {
+		compatible = "regulator-fixed";
+		regulator-name = "touchkey_led";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+
+		gpio = <&tlmm 60 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&tkey_led_en_default>;
+	};
 };
 
 &battery {
@@ -52,6 +107,34 @@
 			drive-strength = <2>;
 			bias-pull-down;
 		};
+	};
+
+	tkey_default: tkey-default-state {
+		pins = "gpio9";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	tkey_en_default: tkey-en-default-state {
+		pins = "gpio11";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	tkey_i2c_default: tkey-i2c-default-state {
+		pins = "gpio8", "gpio10";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	tkey_led_en_default: tkey-led-en-default-state {
+		pins = "gpio60";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
 	};
 };
 
